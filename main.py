@@ -25,10 +25,8 @@ class Cafe(db.Model):
     coffee_price = db.Column(db.String(250), nullable=True)
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
 def home():
-    if request.method == "GET":
-        return redirect(url_for("get_random_cafe"))
     return render_template("index.html")
 
 
@@ -47,6 +45,26 @@ def get_random_cafe():
         has_sockets=cafe.has_sockets,
         can_take_calls=cafe.can_take_calls,
         coffee_price=cafe.coffee_price)
+
+@app.route("/all")
+def all_cafes():
+    all_cafes = db.session.query(Cafe).all()
+    cafe_list = []
+    for cafe in all_cafes:
+        cafe_dict = {
+        "name":cafe.name,
+        "map_url":cafe.map_url,
+        "img_url":cafe.img_url,
+        "location":cafe.location,
+        "seats":cafe.seats,
+        "has_toilet":cafe.has_toilet,
+        "has_wifi":cafe.has_wifi,
+        "has_sockets":cafe.has_sockets,
+        "can_take_calls":cafe.can_take_calls,
+        "coffee_price":cafe.coffee_price}
+        cafe_list.append(cafe_dict)
+
+    return jsonify(cafe_list)
 
 ## HTTP GET - Read Record
 
