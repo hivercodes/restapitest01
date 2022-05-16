@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+import random
 
 app = Flask(__name__)
 
@@ -24,10 +25,28 @@ class Cafe(db.Model):
     coffee_price = db.Column(db.String(250), nullable=True)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
+    if request.method == "GET":
+        return redirect(url_for("get_random_cafe"))
     return render_template("index.html")
-    
+
+
+
+@app.route("/random")
+def get_random_cafe():
+    all_cafes = db.session.query(Cafe).all()
+    cafe = random.choice(all_cafes)
+    return jsonify(name=cafe.name,
+        map_url=cafe.map_url,
+        img_url=cafe.img_url,
+        location=cafe.location,
+        seats=cafe.seats,
+        has_toilet=cafe.has_toilet,
+        has_wifi=cafe.has_wifi,
+        has_sockets=cafe.has_sockets,
+        can_take_calls=cafe.can_take_calls,
+        coffee_price=cafe.coffee_price)
 
 ## HTTP GET - Read Record
 
