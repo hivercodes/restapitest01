@@ -87,6 +87,26 @@ def search():
     else:
         return jsonify(error={"Not found": "No cafe found"})
 
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    if request.method == "POST":
+        new_cafe = Cafe(name=request.form["name"],
+        map_url=request.form["map_url"],
+        img_url=request.form["img_url"],
+        location=request.form["location"],
+        seats=request.form["seats"],
+        has_toilet=bool(request.form["has_toilet"]),
+        has_wifi=bool(request.form["has_wifi"]),
+        has_sockets=bool(request.form["has_sockets"]),
+        can_take_calls=bool(request.form["can_take_calls"]),
+        coffee_price=request.form["coffee_price"])
+        db.session.add(new_cafe)
+        db.session.commit()
+        return jsonify(response={"Success": "Cafe added to database"})
+    return render_template("index.html")
+
 ## HTTP GET - Read Record
 
 ## HTTP POST - Create Record
