@@ -33,6 +33,7 @@ def home():
 
 @app.route("/random")
 def get_random_cafe():
+    #choses a random databsae row.
     all_cafes = db.session.query(Cafe).all()
     cafe = random.choice(all_cafes)
     return jsonify(name=cafe.name,
