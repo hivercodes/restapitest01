@@ -48,6 +48,7 @@ def get_random_cafe():
 
 @app.route("/all")
 def all_cafes():
+    #fetches all the items from the database
     all_cafes = db.session.query(Cafe).all()
     cafe_list = []
     for cafe in all_cafes:
