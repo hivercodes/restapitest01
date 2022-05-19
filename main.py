@@ -92,6 +92,7 @@ def search():
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
+        #makes a new cafe objecxt to add to the database."
         new_cafe = Cafe(name=request.form["name"],
         map_url=request.form["map_url"],
         img_url=request.form["img_url"],
